@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Decision Result | AI Decision Coach</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at top right, #0f766e 0%, transparent 28%),
+                radial-gradient(circle at bottom left, #4338ca 0%, transparent 28%),
+                linear-gradient(135deg, #0f172a, #111827, #1e293b);
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .page {
+            width: 100%;
+            padding: 28px 16px 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        .brand p {
+            margin: 6px 0 0;
+            color: #cbd5e1;
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn,
+        .btn-secondary {
+            text-decoration: none;
+            border: none;
+            border-radius: 14px;
+            padding: 12px 18px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #34d399, #0ea5e9);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 24px;
+        }
+
+        .panel,
+        .result-card,
+        .follow-card,
+        .ask-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 22px;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+        }
+
+        .panel {
+            padding: 22px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .panel h3 {
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-size: 22px;
+        }
+
+        .meta {
+            display: grid;
+            gap: 14px;
+        }
+
+        .meta-item {
+            padding: 14px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .meta-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+        }
+
+        .meta-value {
+            color: #f8fafc;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .main-column {
+            display: grid;
+            gap: 20px;
+        }
+
+        .result-card,
+        .follow-card,
+        .ask-card {
+            padding: 24px;
+        }
+
+        .section-title {
+            margin: 0 0 14px;
+            font-size: 24px;
+        }
+
+        .section-subtitle {
+            margin: 0 0 18px;
+            color: #cbd5e1;
+        }
+
+        .result-content,
+        .follow-answer {
+            white-space: pre-wrap;
+            line-height: 1.75;
+            color: #f8fafc;
+            font-size: 15px;
+        }
+
+        .question-box {
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: rgba(14, 165, 233, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            margin-bottom: 16px;
+            color: #e0f2fe;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            resize: vertical;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            padding: 15px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+        }
+
+        .ask-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 980px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .panel {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="container">
+            <div class="topbar">
+                <div class="brand">
+                    <h1>AI Decision Coach</h1>
+                    <p>Your structured role-based thinking assistant</p>
+                </div>
+
+                <div class="top-actions">
+                    <a href="/" class="btn-secondary">New Decision</a>
+                    <form method="POST" action="/reset" style="margin: 0;">
+                        <button type="submit" class="btn">Reset Session</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="layout">
+                <div class="panel">
+                    <h3>Decision Context</h3>
+
+                    <div class="meta">
+                        <div class="meta-item">
+                            <div class="meta-label">Role</div>
+                            <div class="meta-value">{{ context.role }}</div>
+                        </div>
+
+                        <div class="meta-item">
+                            <div class="meta-label">Problem</div>
+                            <div class="meta-value">{{ context.problem }}</div>
+                        </div>
+
+                        <div class="meta-item">
+                            <div class="meta-label">Constraints</div>
+                            <div class="meta-value">
+                                {% if context.constraints %}
+                                    {{ context.constraints }}
+                                {% else %}
+                                    None provided
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="meta-item">
+                            <div class="meta-label">Priority</div>
+                            <div class="meta-value">{{ context.priority }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="main-column">
+                    <div class="result-card">
+                        <h2 class="section-title">Initial Recommendation</h2>
+                        <p class="section-subtitle">
+                            Structured advice generated based on your selected role and decision context.
+                        </p>
+                        <div class="result-content">{{ initial_result }}</div>
+                    </div>
+
+                    <div class="ask-card">
+                        <h2 class="section-title">Ask a Scenario-Based Follow-Up</h2>
+                        <p class="section-subtitle">
+                            Example: “What if my deadline becomes 2 days shorter?” or
+                            “What if quality matters more than speed now?”
+                        </p>
+
+                        <form method="POST" action="/followup">
+                            <textarea
+                                name="question"
+                                placeholder="Enter your follow-up scenario or question here..."
+                                required
+                            ></textarea>
+
+                            <div class="ask-actions">
+                                <button type="submit" class="btn">Recalculate Decision</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    {% if followups %}
+                        {% for item in followups %}
+                            <div class="follow-card">
+                                <h2 class="section-title">Follow-Up Analysis {{ loop.index }}</h2>
+                                <div class="question-box">
+                                    <strong>Your Question:</strong><br>
+                                    {{ item.question }}
+                                </div>
+                                <div class="follow-answer">{{ item.answer }}</div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
