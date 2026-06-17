@@ -39,10 +39,9 @@ ai-decision-coach/
 │
 ├── templates/
 │   └── index.html
+|   |__ exit.html
 │
-├── static/
-│   ├── style.css
-│   └── script.js
+├── app.py
 │
 └── docs/
     └── project-report.md
