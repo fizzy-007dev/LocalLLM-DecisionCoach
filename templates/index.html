@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Decision Coach</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at top left, #1f3b73 0%, transparent 30%),
+                radial-gradient(circle at bottom right, #3d1f73 0%, transparent 30%),
+                linear-gradient(135deg, #0f172a, #111827, #1e293b);
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .page {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 16px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 28px;
+            align-items: stretch;
+        }
+
+        .hero,
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        }
+
+        .hero {
+            padding: 42px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: rgba(56, 189, 248, 0.18);
+            color: #7dd3fc;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            width: fit-content;
+        }
+
+        .hero h1 {
+            font-size: 44px;
+            margin: 0 0 16px;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 17px;
+            color: #cbd5e1;
+            line-height: 1.7;
+            margin: 0 0 24px;
+        }
+
+        .feature-list {
+            display: grid;
+            gap: 14px;
+            margin-top: 8px;
+        }
+
+        .feature {
+            padding: 16px 18px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #e2e8f0;
+        }
+
+        .feature strong {
+            display: block;
+            margin-bottom: 6px;
+            color: #ffffff;
+        }
+
+        .card {
+            padding: 30px;
+        }
+
+        .card h2 {
+            margin: 0 0 18px;
+            font-size: 28px;
+        }
+
+        .card p {
+            color: #cbd5e1;
+            margin-top: 0;
+            margin-bottom: 22px;
+        }
+
+        .error {
+            background: rgba(239, 68, 68, 0.15);
+            color: #fecaca;
+            border: 1px solid rgba(248, 113, 113, 0.35);
+            padding: 12px 14px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #f8fafc;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px 14px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        select option {
+            color: #111827;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.18);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 110px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px 18px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #38bdf8, #6366f1);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            opacity: 0.95;
+        }
+
+        .footer-note {
+            margin-top: 18px;
+            font-size: 13px;
+            color: #94a3b8;
+            text-align: center;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 34px;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="container">
+            <div class="hero">
+                <div class="badge">AI Decision Coach</div>
+                <h1>Think better.<br>Decide smarter.</h1>
+                <p>
+                    A role-based AI thinking assistant built with Flask and Ollama.
+                    Get structured recommendations tailored to how a student, teacher,
+                    manager, developer, designer, or any other role should think through a decision.
+                </p>
+
+                <div class="feature-list">
+                    <div class="feature">
+                        <strong>Role-Aware Recommendations</strong>
+                        Advice changes depending on the role you choose.
+                    </div>
+                    <div class="feature">
+                        <strong>Structured Reasoning</strong>
+                        Get recommendation, role-based reasoning, risks, and alternatives.
+                    </div>
+                    <div class="feature">
+                        <strong>Scenario Recalculation</strong>
+                        Ask follow-up “what if” questions and let the AI rethink the decision.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Start your decision analysis</h2>
+                <p>Fill in the details below and get a structured role-based recommendation.</p>
+
+                {% if error %}
+                    <div class="error">{{ error }}</div>
+                {% endif %}
+
+                <form method="POST" action="/">
+                    <div class="form-group">
+                        <label for="role">Select Role</label>
+                        <select name="role" id="role" required onchange="toggleCustomRole()">
+                            <option value="">Choose a role</option>
+                            <option value="Student">Student</option>
+                            <option value="Teacher">Teacher</option>
+                            <option value="Manager">Manager</option>
+                            <option value="Developer">Developer</option>
+                            <option value="Designer">Designer</option>
+                            <option value="Entrepreneur">Entrepreneur</option>
+                            <option value="Researcher">Researcher</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group hidden" id="customRoleGroup">
+                        <label for="custom_role">Custom Role</label>
+                        <input type="text" name="custom_role" id="custom_role" placeholder="Enter your role">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="problem">Problem Statement</label>
+                        <textarea
+                            name="problem"
+                            id="problem"
+                            placeholder="Example: I need to decide whether I should focus on exam preparation or build a portfolio project this month."
+                            required
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="constraints">Constraints</label>
+                        <textarea
+                            name="constraints"
+                            id="constraints"
+                            placeholder="Example: Limited time, only 2 weeks left, low budget, team dependency, strict deadline..."
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="priority">Priority</label>
+                        <select name="priority" id="priority">
+                            <option value="Balanced">Balanced</option>
+                            <option value="Speed">Speed</option>
+                            <option value="Quality">Quality</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn">Generate Decision Advice</button>
+                </form>
+
+                <div class="footer-note">
+                    Powered by Flask + Ollama + gemma:2b
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleCustomRole() {
+            const roleSelect = document.getElementById("role");
+            const customRoleGroup = document.getElementById("customRoleGroup");
+
+            if (roleSelect.value === "Other") {
+                customRoleGroup.classList.remove("hidden");
+            } else {
+                customRoleGroup.classList.add("hidden");
+            }
+        }
+    </script>
+</body>
+</html>
