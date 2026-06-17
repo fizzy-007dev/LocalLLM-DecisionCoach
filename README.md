@@ -30,7 +30,6 @@ The project uses a Flask backend, a responsive HTML/CSS/JavaScript frontend, and
 ```text
 ai-decision-coach/
 │
-├── app.py
 ├── requirements.txt
 ├── .env.example
 ├── .gitignore
